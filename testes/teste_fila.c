@@ -138,7 +138,7 @@ struct fila_t *fila_destroi (struct fila_t *f) {
 
 // testando tad fila
 
-int main() {
+/* int main() {
     struct fila_t *f;
     int num;
 
@@ -176,4 +176,4 @@ int main() {
     fila_destroi(f);
 
     return 0;
-}
+} */

@@ -2,89 +2,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "../theboys.tgz/fila.h"
+#include "../theboys.tgz/fprio.h"
+#include "teste_mundo.h"
 #include "conjunto.h"
 #include "teste_funcoes.h"
-
-// inicialização do mundo - [editar] fazer um arquivo pros defines
-#define T_INICIO 0  
-#define T_FIM_DO_MUNDO 525600
-#define N_TAMANHO_MUNDO 20000
-#define N_HABILIDADES 10
-#define N_HEROIS /* (N_HABILIDADES * 5) */ 10
-#define N_BASES /* (N_HEROIS / 5)  */ 10
-#define N_MISSOES /* (T_FIM_DO_MUNDO / 100)  */ 10
-#define N_COMPOSTOS_V (N_HABILIDADES * 3)
-
-/* ---------------------------------------------------------------------------- teste_funcoes.c ----------------------------------------------------------------------------- */
-
-struct coord_t {
-    int x;
-    int y;
-};
-
-int sorteia_num(int min, int max) {
-    int n = rand() % (max - min + 1) + min;
-
-    return n;
-}
-
-struct coord_t cria_coord(int x, int y) {
-    struct coord_t posicao;
-
-    posicao.x = x;
-    posicao.y = y;
-
-    return posicao;
-}
-
-struct coord_t sorteia_coord(int min, int max) {
-    struct coord_t posicao;
-
-    posicao.x = rand() % (max - min + 1) + min;
-    posicao.y = rand() % (max - min + 1) + min;
-
-    return posicao;
-}
-
-/* --------------------------------------------------------------------------- estruturas de dados ----------------------------------------------------------------------------- */
-
-
-struct heroi_t {
-    int id;
-    int xp;
-    int base;
-    int paciencia;
-    int velocidade;
-    int vivo;
-    struct cjto_t *habilidades;
-};
-
-struct base_t {
-    int id;
-    struct coord_t local;
-    int lotacao;
-    struct cjto_t *presentes;
-    struct fila_t *espera;
-};
-
-struct missao_t {
-    int id;
-    struct coord_t local;
-    struct cjto_t *habilidades;
-};
-
-struct mundo_t {
-    int n_herois;
-    int n_bases;
-    int n_missoes;
-    int n_habilidades;
-    int n_compostos_v;
-    struct heroi_t **herois;
-    struct base_t **bases;
-    struct missao_t **missoes;
-    struct coord_t tamanho_mundo;
-    int relogio;
-};
+#include "defines.h"
 
 /* ----------------------------------------------------------------- criando e inicializando estruturas de dados -------------------------------------------------------------------- */
 
@@ -205,6 +127,7 @@ struct mundo_t *cria_mundo() {
     mundo -> n_habilidades = N_HABILIDADES;
     mundo -> n_compostos_v = N_COMPOSTOS_V;
     mundo -> relogio = 0;
+    mundo -> lef = fprio_cria();
     mundo -> herois = inic_herois();
     mundo -> bases = inic_bases();
     mundo -> missoes = inic_missoes();
@@ -279,6 +202,9 @@ void destroi_mundo(struct mundo_t **m) {
     if (!m)
         return;
     
+    if ((*m) -> lef) 
+        (*m) -> lef = fprio_destroi((*m) -> lef);
+
     destroi_herois((*m) -> herois, (*m) -> n_herois);
     destroi_bases((*m) -> bases, (*m) -> n_bases);
     destroi_missoes((*m) -> missoes, (*m) -> n_missoes);
@@ -334,7 +260,7 @@ void imprime_missoes(struct missao_t **m) {
 
 /* -------------------------------------------------------------------------------- main ---------------------------------------------------------------------------------- */
 
-int main () {
+/* int main () {
     struct mundo_t *m;
     
     srand(0);
@@ -359,4 +285,4 @@ int main () {
         printf("Mundo foi destruído com sucesso!\n");
     
     return 0;
-}
+} */

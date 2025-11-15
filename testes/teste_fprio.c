@@ -233,7 +233,7 @@ void erro (char *msg)
 
 //------------------------------------------------------------------------------
 
-int main ()
+/* int main ()
 {
   struct fprio_t *fp ;
   struct item_t *item ;
@@ -400,4 +400,4 @@ int main ()
 
   // encerra
   return (0) ;
-}
+} */
