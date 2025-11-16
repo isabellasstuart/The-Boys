@@ -152,12 +152,12 @@ void evento_entra(struct mundo_t *mundo, struct evento_t *ev) {
     if (!(novo = malloc(sizeof(struct evento_t))))
         return;
 
-    printf("%6d: ENTRA HEROI %2d BASE %d (%2d/%2d) SAI %d\n", mundo -> relogio, h -> id, b -> id, cjto_card(b -> presentes), b -> lotacao, novo -> tempo);
-
     novo -> tipo = SAI;
     novo -> tempo = ev->tempo + tpb;
     novo -> base = b;
     novo -> heroi = h;
+
+    printf("%6d: ENTRA HEROI %2d BASE %d (%2d/%2d) SAI %d\n", mundo -> relogio, h -> id, b -> id, cjto_card(b -> presentes), b -> lotacao, novo -> tempo);
 
     fprio_insere(mundo -> lef, novo, novo -> tipo, novo -> tempo);
 }
@@ -301,48 +301,50 @@ int main () {
         ev = fprio_retira(mundo -> lef, &tipo, &tempo);
         configura_relogio(mundo, ev -> tempo);
         
-        if (ev->heroi && ev->base) {
-            switch(tipo) {
-                case CHEGA: 
-                    evento_chega(mundo, ev);
-                    break;
-                    
-                case ESPERA: 
-                    evento_espera(mundo, ev);
-                    break;
-                    
-                case DESISTE: 
-                    evento_desiste(mundo, ev);
-                    break;
-                    
-                case AVISA:
-                    if (ev->base) 
-                    evento_avisa(mundo, ev);
-                    break;
-                    
-                case ENTRA: 
-                    evento_entra(mundo, ev);
-                    break;
-                    
-                case SAI: 
-                    evento_sai(mundo, ev);
-                    break;
-                    
-                case VIAJA: 
-                    evento_viaja(mundo, ev);
-                    break;
-                    
-                case MORRE: 
-                    evento_morre(mundo, ev);
-                    break;
-                case FIM:
-                    fim = 1;
-                    break;
+        switch(tipo) {
+            case FIM:
+                fim = 1;
+                break;
+            default:
+                if (ev->heroi && ev->base) {
+                    switch(tipo) {
+                        case CHEGA: 
+                            evento_chega(mundo, ev);
+                            break;
+                            
+                        case ESPERA: 
+                            evento_espera(mundo, ev);
+                            break;
+                            
+                        case DESISTE: 
+                            evento_desiste(mundo, ev);
+                            break;
+                            
+                        case AVISA:
+                            evento_avisa(mundo, ev);
+                            break;
+                            
+                        case ENTRA: 
+                            evento_entra(mundo, ev);
+                            break;
+                            
+                        case SAI: 
+                            evento_sai(mundo, ev);
+                            break;
+                            
+                        case VIAJA: 
+                            evento_viaja(mundo, ev);
+                            break;
+                            
+                        case MORRE: 
+                            evento_morre(mundo, ev);
+                            break;
+                    }
                 }
-            free(ev);
+                break;
         }
+        free(ev);
     }
-
     printf("\n");
     printf("LEF que sobrou:\n");
     fprio_imprime(mundo -> lef);

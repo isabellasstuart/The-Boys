@@ -107,7 +107,6 @@ void fila_imprime (struct fila_t *f) {
 
     p = f -> prim;
     if (!p) {
-        printf("");
         return;
     }
 
