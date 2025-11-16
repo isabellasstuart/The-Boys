@@ -48,7 +48,7 @@ struct base_t *cria_base(int *id) {
     b -> id = (*id);
     b -> local = sorteia_coord(0, N_TAMANHO_MUNDO - 1);
     b -> lotacao = sorteia_num(3, 10);
-    b -> presentes = cjto_cria(b -> lotacao);
+    b -> presentes = cjto_cria(N_HEROIS);
     b -> espera = fila_cria();
 
     (*id)++;
@@ -135,8 +135,8 @@ struct mundo_t *cria_mundo() {
 
     fim -> tipo = FIM;
     fim -> tempo = T_FIM_DO_MUNDO;
-    fim -> heroi_id = -1;
-    fim -> base_id = -1;
+    fim -> heroi = NULL;
+    fim -> base = NULL;
 
     fprio_insere(mundo -> lef, fim, fim -> tipo, fim -> tempo);
 

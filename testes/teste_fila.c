@@ -107,15 +107,14 @@ void fila_imprime (struct fila_t *f) {
 
     p = f -> prim;
     if (!p) {
-        printf("Fila vazia!\n");
+        printf("");
         return;
     }
 
-    while (p != f -> ult) {
+    while (p) {
         printf("%d ", p -> item);
         p = p -> prox;
     }
-    printf("%d", p -> item);
 }
 
 // Libera todas as estruturas de dados da fila, inclusive os itens.

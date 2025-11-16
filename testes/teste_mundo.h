@@ -12,13 +12,6 @@
 
 struct coord_t;
 
-struct evento_t {
-    int tipo;
-    int tempo;
-    int heroi_id;
-    int base_id;
-};
-
 struct heroi_t {
     int id;
     int xp;
@@ -55,6 +48,13 @@ struct mundo_t {
     struct missao_t **missoes;
     struct coord_t tamanho_mundo;
     int relogio;
+};
+
+struct evento_t {
+    int tipo;
+    int tempo;
+    struct heroi_t *heroi;
+    struct base_t *base;
 };
 
 struct heroi_t *cria_heroi(int *id);
