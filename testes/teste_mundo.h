@@ -32,6 +32,8 @@ struct base_t {
 
 struct missao_t {
     int id;
+    int cumprida;
+    int tentativas;
     struct coord_t local;
     struct cjto_t *habilidades;
 };
@@ -53,7 +55,7 @@ struct mundo_t {
 struct evento_t {
     int tipo;
     int tempo;
-    struct heroi_t *heroi;
+    void *dado; //  pode ser um herói ou uma missão
     struct base_t *base;
 };
 

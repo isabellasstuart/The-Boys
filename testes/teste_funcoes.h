@@ -20,6 +20,6 @@ struct coord_t cria_coord(int x, int y);
 struct coord_t sorteia_coord(int min, int max);
 
 // calcula a raiz quadrada de um valor
-int raiz_quadrada(int x);
+int calcula_raiz_quadrada(int x);
 
 #endif

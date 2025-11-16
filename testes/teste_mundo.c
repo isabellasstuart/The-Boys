@@ -81,6 +81,8 @@ struct missao_t *cria_missao(int *id) {
         return NULL;
 
     m -> id = (*id);
+    m -> cumprida = 0;
+    m -> tentativas = 0;
     m -> local = sorteia_coord(0, N_TAMANHO_MUNDO - 1);
     m -> habilidades = cjto_aleat(sorteia_num(6, 10), N_HABILIDADES);
 
@@ -117,7 +119,6 @@ struct mundo_t *cria_mundo() {
     if (!(fim = malloc(sizeof(struct evento_t))))
         return NULL;
 
-
     mundo -> n_herois = N_HEROIS;
     mundo -> n_bases = N_BASES;
     mundo -> n_missoes = N_MISSOES;
@@ -135,7 +136,7 @@ struct mundo_t *cria_mundo() {
 
     fim -> tipo = FIM;
     fim -> tempo = T_FIM_DO_MUNDO;
-    fim -> heroi = NULL;
+    fim -> dado = NULL;
     fim -> base = NULL;
 
     fprio_insere(mundo -> lef, fim, fim -> tipo, fim -> tempo);

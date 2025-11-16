@@ -20,7 +20,7 @@
 #define SAI 6
 #define VIAJA 7
 #define MORRE 8
-#define MISSÃO 9
+#define MISSAO 9
 #define FIM 10
 
 #endif

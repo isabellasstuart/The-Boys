@@ -24,7 +24,20 @@ struct coord_t sorteia_coord(int min, int max) {
     return posicao;
 }
 
-int raiz_quadrada(int x) {
+int calcula_raiz_quadrada(int x) {
     return sqrt(x);
 }
 
+// ordena vetor por insertion sort
+void ordena_vetor(int *v, int tam) {
+    int i, j, chave;
+    for (i = 1; i < tam; i++) {
+        chave = v[i];
+        j = i - 1;
+        while ((j >= 0) && (v[j] > chave)) {
+            v[j + 1] = v[j];
+            j--;
+        }
+        v[j + 1] = chave;
+    }
+}
