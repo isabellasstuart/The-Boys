@@ -115,7 +115,7 @@ void fila_imprime (struct fila_t *f) {
         printf("%d ", p -> item);
         p = p -> prox;
     }
-    printf("%d\n", p -> item);
+    printf("%d", p -> item);
 }
 
 // Libera todas as estruturas de dados da fila, inclusive os itens.

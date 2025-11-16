@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "../theboys.tgz/fila.h"
-#include "../theboys.tgz/fprio.h"
 #include "teste_mundo.h"
-#include "conjunto.h"
-#include "teste_funcoes.h"
-#include "defines.h"
 
 /* ----------------------------------------------------------------- criando e inicializando estruturas de dados -------------------------------------------------------------------- */
 
@@ -117,9 +109,14 @@ struct missao_t **inic_missoes() {
 
 struct mundo_t *cria_mundo() {
     struct mundo_t *mundo;
+    struct evento_t *fim;
 
     if (!(mundo = malloc(sizeof(struct mundo_t))))
         return NULL;
+
+    if (!(fim = malloc(sizeof(struct evento_t))))
+        return NULL;
+
 
     mundo -> n_herois = N_HEROIS;
     mundo -> n_bases = N_BASES;
@@ -133,10 +130,21 @@ struct mundo_t *cria_mundo() {
     mundo -> missoes = inic_missoes();
     mundo -> tamanho_mundo = cria_coord(N_TAMANHO_MUNDO, N_TAMANHO_MUNDO);
 
-    if (!(mundo -> herois) || !(mundo -> bases) || !(mundo -> missoes))
+    if (!(mundo -> lef) || !(mundo -> herois) || !(mundo -> bases) || !(mundo -> missoes))
         return NULL;
 
+    fim -> tipo = FIM;
+    fim -> tempo = T_FIM_DO_MUNDO;
+    fim -> heroi_id = -1;
+    fim -> base_id = -1;
+
+    fprio_insere(mundo -> lef, fim, fim -> tipo, fim -> tempo);
+
     return mundo;
+}
+
+void configura_relogio(struct mundo_t *mundo, int tempo) {
+    mundo -> relogio = tempo;
 }
 
 /* --------------------------------------------------------------------- liberando estruturas de dados ------------------------------------------------------------ */

@@ -1,11 +1,23 @@
 #ifndef MUNDO
 #define MUNDO
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "../theboys.tgz/fila.h"
 #include "../theboys.tgz/fprio.h"
 #include "conjunto.h"
 #include "teste_funcoes.h"
 #include "defines.h"
+
+struct coord_t;
+
+struct evento_t {
+    int tipo;
+    int tempo;
+    int heroi_id;
+    int base_id;
+};
 
 struct heroi_t {
     int id;
@@ -72,5 +84,7 @@ void imprime_herois(struct heroi_t **h);
 void imprime_bases(struct base_t **b);
 
 void imprime_missoes(struct missao_t **m);
+
+void configura_relogio(struct mundo_t *mundo, int tempo);
 
 #endif
