@@ -46,6 +46,8 @@ struct base_t *cria_base(int *id) {
         return NULL;
 
     b -> id = (*id);
+    b -> fila_max = 0;
+    b -> missoes_cumpridas = 0;
     b -> local = sorteia_coord(0, N_TAMANHO_MUNDO - 1);
     b -> lotacao = sorteia_num(3, 10);
     b -> presentes = cjto_cria(N_HEROIS);
@@ -124,6 +126,8 @@ struct mundo_t *cria_mundo() {
     mundo -> n_missoes = N_MISSOES;
     mundo -> n_habilidades = N_HABILIDADES;
     mundo -> n_compostos_v = N_COMPOSTOS_V;
+    mundo -> n_eventos = 0;
+    mundo -> missoes_cumpridas = 0;
     mundo -> relogio = 0;
     mundo -> lef = fprio_cria();
     mundo -> herois = inic_herois();

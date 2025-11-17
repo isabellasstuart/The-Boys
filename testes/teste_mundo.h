@@ -24,8 +24,10 @@ struct heroi_t {
 
 struct base_t {
     int id;
-    struct coord_t local;
     int lotacao;
+    int fila_max;
+    int missoes_cumpridas;
+    struct coord_t local;
     struct cjto_t *presentes;
     struct fila_t *espera;
 };
@@ -44,6 +46,8 @@ struct mundo_t {
     int n_missoes;
     int n_habilidades;
     int n_compostos_v;
+    int n_eventos;
+    int missoes_cumpridas;
     struct fprio_t *lef;
     struct heroi_t **herois;
     struct base_t **bases;
