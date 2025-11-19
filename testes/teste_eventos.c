@@ -480,7 +480,7 @@ void imprime_estatisticas_bases(struct mundo_t *mundo) {
 
 void imprime_estatisticas_mundo(struct mundo_t *mundo) {
     printf("EVENTOS TRATADOS: %d\n", mundo -> n_eventos);
-    printf("MISSOES CUMPRIDAS: %d/%d", mundo -> missoes_cumpridas, N_MISSOES);
+    printf("MISSOES CUMPRIDAS: %d/%d\n", mundo -> missoes_cumpridas, N_MISSOES);
 }
 
 void evento_fim(struct mundo_t *mundo, struct evento_t *ev) {

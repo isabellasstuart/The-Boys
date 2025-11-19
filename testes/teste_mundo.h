@@ -1,15 +1,6 @@
 #ifndef MUNDO
 #define MUNDO
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "../theboys.tgz/fila.h"
-#include "../theboys.tgz/fprio.h"
-#include "conjunto.h"
-#include "teste_funcoes.h"
-#include "defines.h"
-
 struct coord_t;
 
 struct heroi_t {

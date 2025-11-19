@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#define MAX 5
 
 /* ---------------------------------------------------------fila.h------------------------------------------------------------------ */
 
@@ -53,9 +51,6 @@ int fila_insere (struct fila_t *f, int item) {
     struct fila_nodo_t *inserido;
     
     if (!f)
-        return 0;
-
-    if (fila_tamanho(f) >= MAX)    // alterar esse max para lotacao da fila
         return 0;
 
     if (!(inserido = malloc(sizeof(struct fila_nodo_t))))
