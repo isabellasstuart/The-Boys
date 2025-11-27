@@ -81,7 +81,10 @@ void fila_imprime (struct fila_t *f) {
         return;
 
     while (p) {
-        printf("%d ", p -> item);
+        if (p -> item == 0)
+            printf("%2d", p -> item);
+        else
+            printf("%02d ", p -> item);
         p = p -> prox;
     }
 }

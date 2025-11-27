@@ -25,18 +25,7 @@ void evento_viaja(struct mundo_t *mundo, struct evento_t *ev);
 
 void evento_morre(struct mundo_t *mundo, struct evento_t *ev);
 
-// [editar] deixar em teste_funcoes.c
-// retorna a distancia entre uma base e uma missao -- [editar] criar uma para calcular a distância entre bases também
-int calcula_distancia(struct missao_t *missao, struct base_t *base);
-
-// [editar] deixar mais modularizada + acrescentar prints de depuração
 void evento_missao(struct mundo_t *mundo, struct evento_t *ev);
-
-void imprime_estatisticas_herois(struct mundo_t *mundo);
-
-void imprime_estatisticas_bases(struct mundo_t *mundo);
-
-void imprime_estatisticas_mundo(struct mundo_t *mundo);
 
 void evento_fim(struct mundo_t *mundo, struct evento_t *ev);
 

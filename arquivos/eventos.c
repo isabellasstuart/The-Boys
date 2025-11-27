@@ -10,9 +10,6 @@
 #include "defines.h"
 
 void evento_cria(struct mundo_t *mundo, struct evento_t *ev, int tipo, int tempo, void *dado, struct base_t *b) {
-    
-    if (!ev)
-        return;
 
     ev -> tipo = tipo;
     ev -> tempo = tempo;
@@ -235,7 +232,7 @@ void evento_morre(struct mundo_t *mundo, struct evento_t *ev) {
 }
 
 void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
-    struct missao_t *missao;
+    struct missao_t *missao = ev -> dado;
     struct missao_dist distancias[N_BASES];
     struct base_t *base_atual = NULL;
     struct cjto_t *habilidades_base = NULL;
@@ -246,7 +243,6 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
     if (!(novo = malloc(sizeof(struct evento_t))))
         return;
 
-    missao = ev -> dado;
     (missao -> tentativas)++;
 
     // atualiza os números mínimo e máximo de tentativas de uma missão no mundo, se for necessário.
@@ -286,9 +282,10 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
     if (missao_procura_bmp(mundo, missao, &base_atual, distancias, N_BASES)) {
         
         if (!(habilidades_base = reune_habilidades_base(mundo, missao, base_atual))) {
-            free(novo);             // [dúvida] aqui, eu chamo reune_habilidades_base 2 vezes: 
-            return;                 // dentro da funcao procura bmp (como variável local) e aqui.
-        }                           // pode deixar assim mesmo?
+            evento_cria(mundo, novo, MISSAO, ev -> tempo + 24*60, missao, NULL);
+            printf("%6d: MISSAO %d IMPOSSIVEL\n", mundo -> relogio, missao -> id);
+            return;                 
+        }                           
 
         missao -> cumprida = 1;
         (base_atual -> missoes_cumpridas)++;
@@ -317,17 +314,17 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
                     achou = 1;
                 i++;
             }
+
+            if (!(habilidades_base = reune_habilidades_base(mundo, missao, base_atual))) {
+                evento_cria(mundo, novo, MISSAO, ev -> tempo + 24*60, missao, NULL);
+                printf("%6d: MISSAO %d IMPOSSIVEL\n", mundo -> relogio, missao -> id);
+                return;                 
+            }
             
             (mundo -> n_compostos_v)--;
             missao -> cumprida = 1;
             (base_atual -> missoes_cumpridas)++;
             (mundo -> missoes_cumpridas)++;
-
-            habilidades_base = reune_habilidades_base(mundo, missao, base_atual);
-
-            printf("%6d: MISSAO %d CUMPRIDA BASE %d HABS: [ ", mundo -> relogio, missao -> id, base_atual -> id);
-            cjto_imprime(habilidades_base);
-            printf(" ]\n");
 
             // encontra o heroi mais experiente da base
             for (j = 0; j < N_HEROIS; j++) {
@@ -337,6 +334,17 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
             }
             
             heroi = (mundo -> herois)[maior_xp];
+
+            if (!(acrescenta_habilidades_heroi(missao, heroi))) {
+                evento_cria(mundo, novo, MISSAO, ev -> tempo + 24*60, missao, NULL);
+                printf("%6d: MISSAO %d IMPOSSIVEL\n", mundo -> relogio, missao -> id);
+                return;            
+            }
+
+            printf("%6d: MISSAO %d CUMPRIDA BASE %d HABS: [ ", mundo -> relogio, missao -> id, base_atual -> id);
+            cjto_imprime(habilidades_base);
+            printf(" ]\n");
+ 
             cjto_retira(base_atual -> presentes, heroi -> id);   
             
             incrementa_xp_herois(mundo, base_atual);

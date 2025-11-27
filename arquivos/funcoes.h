@@ -32,10 +32,16 @@ int missao_procura_bmp(struct mundo_t *mundo, struct missao_t *missao, struct ba
 
 void incrementa_xp_herois(struct mundo_t *mundo, struct base_t *base);
 
+int acrescenta_habilidades_heroi(struct missao_t *missao, struct heroi_t *heroi);
+
+double media_tentativas_missoes(struct mundo_t *mundo);
+
 void imprime_estatisticas_herois(struct mundo_t *mundo);
 
 void imprime_estatisticas_bases(struct mundo_t *mundo);
 
 void imprime_estatisticas_mundo(struct mundo_t *mundo);
+
+void percorre_lef(struct mundo_t *mundo);
 
 #endif
