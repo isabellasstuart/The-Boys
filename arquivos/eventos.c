@@ -19,29 +19,31 @@ void evento_cria(struct mundo_t *mundo, struct evento_t *ev, int tipo, int tempo
     fprio_insere(mundo -> lef, ev, ev -> tipo, ev -> tempo);
 }
 
-void evento_inic_herois(struct mundo_t *mundo, struct heroi_t *h) {
+int evento_inic_herois(struct mundo_t *mundo, struct heroi_t *h) {
     struct evento_t *novo;
     int base, tempo;
 
     if (!(novo = malloc(sizeof(struct evento_t))))
-        return;
+        return 0;
 
     base = sorteia_num(0, N_BASES - 1);
     tempo = sorteia_num(0, 4320);
 
     evento_cria(mundo, novo, CHEGA, tempo, h, mundo -> bases[base]);
+    return 1;
 }
 
-void evento_inic_missoes(struct mundo_t *mundo, struct missao_t *m) {
+int evento_inic_missoes(struct mundo_t *mundo, struct missao_t *m) {
     struct evento_t *novo;
     int tempo;
 
     if (!(novo = malloc(sizeof(struct evento_t))))
-        return;
+        return 0;
 
     tempo = sorteia_num(0, T_FIM_DO_MUNDO);
 
     evento_cria(mundo, novo, MISSAO, tempo, m, NULL);
+    return 1;
 }
 
 void evento_chega(struct mundo_t *mundo, struct evento_t *ev) {
@@ -50,8 +52,8 @@ void evento_chega(struct mundo_t *mundo, struct evento_t *ev) {
     struct base_t *base = ev -> base;
     bool espera;
 
-    if (!(heroi -> vivo))       // [dúvida] precisa verificar sempre? porque, como o herói 
-        return;                 // sai da base quando morre, nenhum evento criado o envolve.
+    if (!(heroi -> vivo))       
+        return;                 
 
     if (!(novo = malloc(sizeof(struct evento_t))))
         return;
@@ -88,6 +90,7 @@ void evento_espera(struct mundo_t *mundo, struct evento_t *ev) {
 
     fila_insere(base -> espera, heroi -> id);
 
+    // atualiza o tamanho máximo que a fila da base atinge durante a simulação
     if (fila_tamanho(base -> espera) > base -> fila_max)
         base -> fila_max = fila_tamanho(base -> espera);
 
@@ -188,9 +191,9 @@ void evento_sai(struct mundo_t *mundo, struct evento_t *ev) {
 }
 
 void evento_viaja(struct mundo_t *mundo, struct evento_t *ev) {
+    struct heroi_t *heroi = ev -> dado;
     struct base_t *base_atual, *base_destino, *base = ev -> base;
     struct evento_t *novo;
-    struct heroi_t *heroi = ev -> dado;
     int distancia, duracao, dx, dy;
 
     if (!(heroi -> vivo))
@@ -281,7 +284,7 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
 
     if (missao_procura_bmp(mundo, missao, &base_atual, distancias, N_BASES)) {
         
-        if (!(habilidades_base = reune_habilidades_base(mundo, missao, base_atual))) {
+        if (!(habilidades_base = reune_habilidades_base(mundo, base_atual))) {
             evento_cria(mundo, novo, MISSAO, ev -> tempo + 24*60, missao, NULL);
             printf("%6d: MISSAO %d IMPOSSIVEL\n", mundo -> relogio, missao -> id);
             return;                 
@@ -315,7 +318,7 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
                 i++;
             }
 
-            if (!(habilidades_base = reune_habilidades_base(mundo, missao, base_atual))) {
+            if (!(habilidades_base = reune_habilidades_base(mundo, base_atual))) {
                 evento_cria(mundo, novo, MISSAO, ev -> tempo + 24*60, missao, NULL);
                 printf("%6d: MISSAO %d IMPOSSIVEL\n", mundo -> relogio, missao -> id);
                 return;                 
@@ -364,7 +367,7 @@ void evento_missao(struct mundo_t *mundo, struct evento_t *ev) {
     }
 }
 
-void evento_fim(struct mundo_t *mundo, struct evento_t *ev) {
+void evento_fim(struct mundo_t *mundo) {
     printf("%6d: FIM\n", mundo -> relogio);
 
     printf("\n");

@@ -15,20 +15,20 @@ struct heroi_t {
     int id;
     int xp;
     int base;
+    int vivo;       // salva se está vivo ou morto.
     int paciencia;
     int velocidade;
-    int vivo;
     struct cjto_t *habilidades;
 };
 
 struct base_t {
     int id;
     int lotacao;
-    int fila_max;
+    int fila_max;   
     int missoes_cumpridas;
     struct coord_t local;
-    struct cjto_t *presentes;
     struct fila_t *espera;
+    struct cjto_t *presentes;
 };
 
 struct missao_t {
@@ -40,6 +40,7 @@ struct missao_t {
 };
 
 struct mundo_t {
+    int relogio;
     int n_herois;
     int n_bases;
     int n_missoes;
@@ -50,7 +51,6 @@ struct mundo_t {
     int missoes_cumpridas;
     int missoes_min_tent;
     int missoes_max_tent;
-    int relogio;
     struct fprio_t *lef;
     struct heroi_t **herois;
     struct base_t **bases;
@@ -61,7 +61,7 @@ struct mundo_t {
 struct evento_t {
     int tipo;
     int tempo;
-    void *dado;   // pode ser um herói ou uma missão
+    void *dado;     // pode ser um herói ou uma missão
     struct base_t *base;
 };
 
@@ -69,8 +69,6 @@ struct missao_dist {
     struct base_t *base;
     int distancia;
 };
-
-// [dúvida] muitas descrições acabam ficando meio repetidas. mantenho assim mesmo?
 
 // aloca memória para o herói e o inicializa
 struct heroi_t *cria_heroi(int *id);

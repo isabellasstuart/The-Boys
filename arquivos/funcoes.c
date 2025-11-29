@@ -58,7 +58,7 @@ int calcula_distancia(struct missao_t *missao, struct base_t *base) {
     return calcula_raiz_quadrada(((dx * dx) + (dy * dy)));
 }
 
-struct cjto_t *reune_habilidades_base(struct mundo_t *mundo, struct missao_t *missao, struct base_t *base) {
+struct cjto_t *reune_habilidades_base(struct mundo_t *mundo, struct base_t *base) {
     struct cjto_t *habilidades_base = NULL, *habilidades_novas = NULL;
     int i;
 
@@ -94,7 +94,7 @@ int missao_procura_bmp(struct mundo_t *mundo, struct missao_t *missao, struct ba
         cjto_imprime(base_atual -> presentes);
         printf(" ]\n");
 
-        if (!(habilidades_base = reune_habilidades_base(mundo, missao, base_atual)))
+        if (!(habilidades_base = reune_habilidades_base(mundo, base_atual)))
             break;             // [dúvida] rever esse break    
         
         for (j = 0; j < N_HEROIS; j++) {
@@ -201,13 +201,17 @@ void percorre_lef(struct mundo_t *mundo) {
     int i, fim = 0, tipo, tempo; 
 
     for (i = 0; i < N_HEROIS; i++) {
-        if (mundo -> herois[i])
-            evento_inic_herois(mundo, (mundo -> herois)[i]);
+        if (!(evento_inic_herois(mundo, (mundo -> herois)[i]))) {
+            destroi_mundo(&mundo);
+            return;
+        }
     }
 
     for (i = 0; i < N_MISSOES; i++) {
-        if (mundo -> missoes[i])
-            evento_inic_missoes(mundo, (mundo -> missoes)[i]);
+        if (!(evento_inic_missoes(mundo, (mundo -> missoes)[i]))) {
+            destroi_mundo(&mundo);
+            return;
+        }
     }
 
     configura_relogio(mundo, 0);
@@ -221,7 +225,7 @@ void percorre_lef(struct mundo_t *mundo) {
         switch(tipo) {
             case FIM:   
                 fim = 1;
-		        evento_fim(mundo, ev);
+		        evento_fim(mundo);
                 break;
             default:
                 if (ev -> dado) {
