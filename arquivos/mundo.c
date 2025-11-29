@@ -11,7 +11,7 @@ void destroi_herois(struct heroi_t **h, int tam) {
     if (!h)
         return;
 
-    for (i = 0; i < tam; i++)
+    for (i = 0; i < tam; i++) {
         if (h[i]) {
             if (h[i] -> habilidades)
                 cjto_destroi(h[i] -> habilidades);
@@ -19,6 +19,7 @@ void destroi_herois(struct heroi_t **h, int tam) {
             free(h[i]);
             h[i] = NULL;
         }
+    }
     
     free(h);
 }
@@ -29,7 +30,7 @@ void destroi_bases(struct base_t **b, int tam) {
     if (!b)
         return;
 
-    for (i = 0; i < tam; i++)
+    for (i = 0; i < tam; i++) {
         if (b[i]) {
             if (b[i] -> presentes)
                 cjto_destroi(b[i] -> presentes);
@@ -40,6 +41,7 @@ void destroi_bases(struct base_t **b, int tam) {
             free(b[i]);
             b[i] = NULL;
         }
+    }
 
     free(b);
 }
@@ -50,7 +52,7 @@ void destroi_missoes(struct missao_t **m, int tam) {
     if (!m)
         return;
 
-    for (i = 0; i < tam; i++)
+    for (i = 0; i < tam; i++) {
         if (m[i]) {
             if (m[i] -> habilidades)
                 cjto_destroi(m[i] -> habilidades);
@@ -58,20 +60,28 @@ void destroi_missoes(struct missao_t **m, int tam) {
             free(m[i]);
             m[i] = NULL;
         }
-
+    }
+    
     free(m);
 }
 
 void destroi_mundo(struct mundo_t **m) {
+    
     if (!m)
         return;
     
     if ((*m) -> lef) 
         (*m) -> lef = fprio_destroi((*m) -> lef);
 
-    destroi_herois((*m) -> herois, (*m) -> n_herois);
-    destroi_bases((*m) -> bases, (*m) -> n_bases);
-    destroi_missoes((*m) -> missoes, (*m) -> n_missoes);
+    if ((*m) -> herois)
+        destroi_herois((*m) -> herois, (*m) -> n_herois);
+    
+    if ((*m) -> bases)
+        destroi_bases((*m) -> bases, (*m) -> n_bases);
+
+    if ((*m) -> missoes)
+        destroi_missoes((*m) -> missoes, (*m) -> n_missoes);
+    
     free(*m);
     *m = NULL;
 }
@@ -232,58 +242,89 @@ struct mundo_t *cria_mundo() {
     mundo -> missoes = inic_missoes();
     mundo -> tamanho_mundo = cria_coord(N_TAMANHO_MUNDO, N_TAMANHO_MUNDO);
 
-    if (!(mundo -> lef) || !(mundo -> herois) || !(mundo -> bases) || !(mundo -> missoes))
+    if (!(mundo -> lef) || !(mundo -> herois) || !(mundo -> bases) || !(mundo -> missoes)) {
+        destroi_mundo(&mundo);
         return NULL;
+    }
 
     evento_cria(mundo, fim, FIM, T_FIM_DO_MUNDO, NULL, NULL);
 
     return mundo;
 }
 
-void imprime_herois(struct heroi_t **h) {
-    int i;
-
-    for (i = 0; i < N_HEROIS; i++) {
-        printf("\n");
-        printf("id: %d\n", h[i] -> id);
-        printf("xp: %d; base: %d; paciencia: %d; velocidade: %d; n_habilidades: %d\n", h[i] -> xp, h[i] -> base, h[i] -> paciencia, h[i] -> velocidade, cjto_card(h[i] -> habilidades));
-        printf("habilidades: ");
-        cjto_imprime(h[i] -> habilidades);
-        printf("\n");
-        if (h[i] -> vivo)
-            printf("status: vivo\n");
-        else   
-            printf("status: morto\n");
-        printf("\n");
-    }
-    printf("\n");
-}
-
-void imprime_bases(struct base_t **b) {
-    int i;
-
-    for (i = 0; i < N_BASES; i++) {
-        printf("\n");
-        printf("id: %d\n", b[i] -> id);
-        printf("lotacao: %d; n_presentes: %d; n_esperando: %d; local: %d x %d\n", b[i] -> lotacao, cjto_card(b[i] -> presentes), fila_tamanho(b[i] -> espera), (b[i] -> local).x, (b[i] -> local).y);
-    }
-    printf("\n");
-}
-
-void imprime_missoes(struct missao_t **m) {
-    int i;
-
-    for (i = 0; i < N_MISSOES; i++) {
-        printf("\n");
-        printf("id: %d\n", m[i] -> id);
-        printf("n_habilidades: %d; local: %d x %d\n", cjto_card(m[i] -> habilidades), (m[i] -> local).x, (m[i] -> local).y);
-        printf("habilidades: ");
-        cjto_imprime(m[i] -> habilidades);
-        printf("\n");
-    }
-    printf("\n");
-}
-
 void configura_relogio(struct mundo_t *mundo, int tempo) {
     mundo -> relogio = tempo;
+}
+
+void percorre_lef(struct mundo_t *mundo) {
+    struct evento_t *ev;
+    int i, fim = 0, tipo, tempo; 
+
+    for (i = 0; i < N_HEROIS; i++) {
+        if (!(evento_inic_herois(mundo, (mundo -> herois)[i]))) {
+            destroi_mundo(&mundo);
+            return;
+        }
+    }
+
+    for (i = 0; i < N_MISSOES; i++) {
+        if (!(evento_inic_missoes(mundo, (mundo -> missoes)[i]))) {
+            destroi_mundo(&mundo);
+            return;
+        }
+    }
+
+    configura_relogio(mundo, 0);
+
+    while (!fim && fprio_tamanho(mundo -> lef)) {
+        ev = fprio_retira(mundo -> lef, &tipo, &tempo);
+        (mundo -> n_eventos)++;
+        configura_relogio(mundo, ev -> tempo);
+        
+        switch(tipo) {
+            case CHEGA: 
+                evento_chega(mundo, ev);
+                break;
+                
+            case ESPERA: 
+                evento_espera(mundo, ev);
+                break;
+                
+            case DESISTE: 
+                evento_desiste(mundo, ev);
+                break;
+                
+            case AVISA:
+                evento_avisa(mundo, ev);
+                break;
+                
+            case ENTRA: 
+                evento_entra(mundo, ev);
+                break;
+                
+            case SAI: 
+                evento_sai(mundo, ev);
+                break;
+                
+            case VIAJA: 
+                evento_viaja(mundo, ev);
+                break;
+                
+            case MORRE: 
+                evento_morre(mundo, ev);
+                break;
+
+            case MISSAO:
+                evento_missao(mundo, ev);
+                break;
+            
+            case FIM:   
+                fim = 1;
+                evento_fim(mundo);
+                break;          
+        }
+        free(ev);
+    }
+        
+    destroi_mundo(&mundo);
 }

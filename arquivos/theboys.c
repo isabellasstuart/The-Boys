@@ -9,7 +9,7 @@
 int main () {
     struct mundo_t *mundo;
 
-    srand(0);  
+    srand(time(NULL));  
 
     if (!(mundo = cria_mundo()))
         return 1;

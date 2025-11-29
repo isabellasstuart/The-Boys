@@ -70,49 +70,43 @@ struct missao_dist {
     int distancia;
 };
 
-// aloca memória para o herói e o inicializa
+// aloca memória para o herói e o inicializa.
 struct heroi_t *cria_heroi(int *id);
 
-// inicializa o vetor de heróis, de tamanho N_HEROIS
+// inicializa o vetor de heróis, de tamanho N_HEROIS.
 struct heroi_t **inic_herois();
 
-// aloca memória para a base e a inicializa
+// aloca memória para a base e a inicializa.
 struct base_t *cria_base(int *id);
 
-// inicializa o vetor de bases, de tamanho N_BASES
+// inicializa o vetor de bases, de tamanho N_BASES.
 struct base_t **inic_bases();
 
-// aloca memória para a missão e a inicializa
+// aloca memória para a missão e a inicializa.
 struct missao_t *cria_missao(int *id);
 
-// inicializa o vetor de missões, de tamanho N_MISSOES
+// inicializa o vetor de missões, de tamanho N_MISSOES.
 struct missao_t **inic_missoes();
 
-// aloca memória para o mundo e inicializa todas as estruturas de dados dele
+// aloca memória para o mundo e inicializa todas as estruturas de dados dele.
 struct mundo_t *cria_mundo();
 
-// libera a memória utilizada pelo vetor de heróis
+// libera a memória utilizada pelo vetor de heróis.
 void destroi_herois(struct heroi_t **h, int tam);
 
-// libera a memória utilizada pelo vetor de bases
+// libera a memória utilizada pelo vetor de bases.
 void destroi_bases(struct base_t **b, int tam);
 
-// libera a memória utilizada pelo vetor de missões
+// libera a memória utilizada pelo vetor de missões.
 void destroi_missoes(struct missao_t **m, int tam);
 
-// libera a memória utilizada por todas as estruturas de dados do mundo
+// libera a memória utilizada por todas as estruturas de dados do mundo.
 void destroi_mundo(struct mundo_t **m);
 
-// imprime o vetor de heróis, usada para testes
-void imprime_herois(struct heroi_t **h);
-
-// imprime o vetor de bases, usada para testes
-void imprime_bases(struct base_t **b);
-
-// imprime o vetor de missões, usada para testes
-void imprime_missoes(struct missao_t **m);
-
-// atualiza o relógio do mundo para o tempo do evento em andamento
+// atualiza o relógio do mundo para o tempo do evento em andamento.
 void configura_relogio(struct mundo_t *mundo, int tempo);
+
+// executa a simulação, retirando eventos da lef e os processando.
+void percorre_lef(struct mundo_t *mundo);
 
 #endif

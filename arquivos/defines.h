@@ -10,6 +10,7 @@
 #define N_BASES (N_HEROIS / 5)  
 #define N_MISSOES (T_FIM_DO_MUNDO / 100)  
 #define N_COMPOSTOS_V (N_HABILIDADES * 3)
+#define DIA 1440
 
 // tipos de eventos
 #define CHEGA 1

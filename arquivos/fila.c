@@ -29,9 +29,6 @@ int fila_insere (struct fila_t *f, int item) {
     if (!f)
         return 0;
 
-    /* if (fila_tamanho(f) >= MAX)    // [dúvida] a fila de espera tem uma lotação máxima?
-        return 0; */
-
     if (!(inserido = malloc(sizeof(struct fila_nodo_t))))
         return 0;
 
@@ -81,10 +78,7 @@ void fila_imprime (struct fila_t *f) {
         return;
 
     while (p) {
-        if (p -> item == 0)
-            printf("%2d", p -> item);
-        else
-            printf("%02d ", p -> item);
+        printf("%2d ", p -> item);
         p = p -> prox;
     }
 }

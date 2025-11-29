@@ -4,7 +4,8 @@
 #include "mundo.h"
 
 // aloca um espaço na memória para um novo evento e o insere na lef.
-void evento_cria(struct mundo_t *mundo, struct evento_t *ev, int tipo, int tempo, void *dado, struct base_t *b);
+void evento_cria(struct mundo_t *mundo, struct evento_t *ev, 
+                 int tipo, int tempo, void *dado, struct base_t *b);
 
 // aloca e insere na lef um evento "chega" para cada herói.
 // retorna 1 se funcionar e 0 em caso de erro.

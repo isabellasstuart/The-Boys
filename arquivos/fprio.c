@@ -30,7 +30,7 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio) {
     if (!(inserido = malloc(sizeof(struct fpnodo_t))))
         return -1;
 
-    // Verifica se o item ja existe na fila 
+    // verifica se o item já existe na fila 
     p = f -> prim;
     while (p) {
         if (p -> item == item) {
@@ -45,7 +45,7 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio) {
     inserido -> prio = prio;
     inserido -> prox = NULL;
 
-    // Insere no início
+    // insere no início
     if (!(fprio_tamanho(f)) || (f -> prim -> prio > prio)) {
         inserido -> prox = f -> prim;
         f -> prim = inserido;
@@ -53,7 +53,7 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio) {
     else {
         p = f -> prim;
 
-        // Encontra valor anterior à posição correta de inserido
+        // encontra valor anterior à posição correta de inserido
         while ((p -> prox) && ((p -> prox -> prio) <= (prio))) 
             p = p -> prox;
 
@@ -61,7 +61,7 @@ int fprio_insere (struct fprio_t *f, void *item, int tipo, int prio) {
         p -> prox = inserido;
     }
 
-    // Atualiza f->fim se item for inserido no fim da fprio
+    // atualiza f->fim se item for inserido no fim da fprio
     if (!(fprio_tamanho(f)) || (f -> fim -> prox))
         f -> fim = inserido;
 
