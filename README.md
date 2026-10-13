@@ -45,7 +45,7 @@ O estado do sistema é atualizado quando um evento é processado.
     make
     ./theboys
 
-Para limpar os arquivos gerados:
+Para limpar os arquivos objeto e executável gerados:
 
     make clean
 
