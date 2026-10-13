@@ -1,7 +1,10 @@
 # Simulador de Eventos Discretos "The Boys"
 
-Simulador em C inspirado levemente na série de TV _The Boys_, desenvolvido
-como trabalho final da disciplina de **Programação 1 (CI1001)** da UFPR.
+![Projeto Concluído](https://img.shields.io/badge/Projeto%20Conclu%C3%ADdo-brightgreen)
+
+Simulador em C inspirado na série de TV _The Boys_, desenvolvido
+como trabalho final da disciplina de **Programação 1 (CI1001)** 
+da Universidade Federal do Paraná.
 
 ## Sobre
 
@@ -22,7 +25,7 @@ O estado do sistema é atualizado quando um evento é processado.
 
 - **CHEGA:** Herói chega a uma base e decide se espera para entrar ou desiste
 - **ESPERA:** Herói entra na fila de espera da base
-- **AVISA:** Porteiro admite heróis da fila enquanto houver vagas
+- **AVISA:** Porteiro admite heróis da fila de espera enquanto houver vagas na base
 - **ENTRA:** Herói entra na base e agenda sua saída
 - **SAI:** Herói sai da base e escolhe novo destino
 - **VIAJA:** Herói se desloca entre bases
@@ -34,7 +37,7 @@ O estado do sistema é atualizado quando um evento é processado.
 
 - **Linguagem:** C (padrão C99)
 - **Compilação:** Makefile com `-Wall -Werror -Wextra -std=c99 -g`
-- **TADs implementados:** Fila, Fila de Prioridades, Conjunto e Lista
+- **TADs implementados:** Fila, Fila de Prioridades e Conjunto
 - **Programas auxiliares:** Valgrind (verificação de memória), Git
 
 ## Como compilar e executar
@@ -58,7 +61,7 @@ Ao final da execução, o programa imprime:
 
 ## Créditos
 
-Projeto concebido pelos professores **Fabiano Silva**, **Luis Bona** e
-**Marcos Castilho** para as disciplinas CI1001 e CI067 da UFPR
+Projeto idealizado pelos professores **Fabiano Silva**, **Luis Bona** e
+**Marcos Castilho** para as disciplinas CI1001 e CI067 da UFPR.
 
 Implementação desenvolvida por **Isabella dos Santos Stuart**.
